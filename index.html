@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matzip | 가볼 곳을 담고, 가본 곳을 기록하다</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#FF8C69',
+          cream: '#FFFBF7',
+          ink: '#333333',
+        },
+        fontFamily: {
+          sans: ['Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', 'sans-serif'],
+        },
+        borderRadius: {
+          xl2: '1.5rem',
+        },
+      }
+    }
+  }
+</script>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
+</style>
+</head>
+<body class="bg-cream text-ink">
+
+  <!-- Hero -->
+  <section class="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 py-24">
+    <span class="inline-block bg-primary/10 text-primary font-semibold text-sm px-4 py-1.5 rounded-full mb-6">
+      오늘 뭐 먹지, 이제 고민 끝
+    </span>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-5">
+      가볼 곳을 담고,<br class="sm:hidden">
+      <span class="text-primary">가본 곳</span>을 기록하다
+    </h1>
+    <p class="text-base sm:text-lg text-ink/70 max-w-xl mb-10 leading-relaxed">
+      지도 위에 나만의 맛집 리스트를 만들고, 방문 후엔 짧은 기록을 남겨보세요.
+      오늘 뭘 먹을지 고민될 땐 matzip이 골라드릴게요.
+    </p>
+
+    <form class="w-full max-w-md flex items-center gap-2 bg-white rounded-full shadow-sm ring-1 ring-black/5 p-2 mb-6">
+      <input
+        type="text"
+        placeholder="가고 싶은 동네나 맛집을 검색해보세요"
+        class="flex-1 bg-transparent outline-none px-4 py-2 text-sm sm:text-base placeholder:text-ink/40"
+      >
+      <button type="submit"
+        class="shrink-0 bg-primary text-white font-semibold text-sm sm:text-base px-5 sm:px-6 py-2.5 rounded-full hover:bg-primary/90 transition-colors">
+        검색
+      </button>
+    </form>
+
+    <a href="#popular"
+      class="inline-flex items-center gap-1 text-sm font-medium text-ink/50 hover:text-primary transition-colors">
+      matzip 둘러보기
+      <span aria-hidden="true">↓</span>
+    </a>
+  </section>
+
+</body>
+</html>
