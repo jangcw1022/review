@@ -20,6 +20,10 @@
         borderRadius: {
           xl2: '1.5rem',
         },
+        screens: {
+          tablet: '768px',
+          desktop: '1440px',
+        },
       }
     }
   }
@@ -33,15 +37,15 @@
 <body class="bg-cream text-ink">
 
   <!-- Hero -->
-  <section class="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 py-24">
-    <span class="inline-block bg-primary/10 text-primary font-semibold text-sm px-4 py-1.5 rounded-full mb-6">
+  <section class="min-h-[85vh] tablet:min-h-[90vh] flex flex-col items-center justify-center text-center px-5 py-16 tablet:px-6 tablet:py-24">
+    <span class="inline-block bg-primary/10 text-primary font-semibold text-xs tablet:text-sm px-4 py-1.5 rounded-full mb-6">
       오늘 뭐 먹지, 이제 고민 끝
     </span>
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-5">
-      가볼 곳을 담고,<br class="sm:hidden">
+    <h1 class="text-3xl tablet:text-5xl desktop:text-6xl font-extrabold leading-tight mb-5">
+      가볼 곳을 담고,<br class="tablet:hidden">
       <span class="text-primary">가본 곳</span>을 기록하다
     </h1>
-    <p class="text-base sm:text-lg text-ink/70 max-w-xl mb-10 leading-relaxed">
+    <p class="text-sm tablet:text-lg text-ink/70 max-w-xl mb-10 leading-relaxed">
       지도 위에 나만의 맛집 리스트를 만들고, 방문 후엔 짧은 기록을 남겨보세요.
       오늘 뭘 먹을지 고민될 땐 matzip이 골라드릴게요.
     </p>
@@ -50,10 +54,10 @@
       <input
         type="text"
         placeholder="가고 싶은 동네나 맛집을 검색해보세요"
-        class="flex-1 bg-transparent outline-none px-4 py-2 text-sm sm:text-base placeholder:text-ink/40"
+        class="flex-1 min-w-0 bg-transparent outline-none px-4 py-2 text-sm tablet:text-base placeholder:text-ink/40"
       >
       <button type="submit"
-        class="shrink-0 bg-primary text-white font-semibold text-sm sm:text-base px-5 sm:px-6 py-2.5 rounded-full hover:bg-primary/90 transition-colors">
+        class="shrink-0 bg-primary text-white font-semibold text-sm tablet:text-base px-5 tablet:px-6 py-2.5 rounded-full hover:bg-primary/90 transition-colors">
         검색
       </button>
     </form>
@@ -66,13 +70,13 @@
   </section>
 
   <!-- 인기 맛집 카드 -->
-  <section id="popular" class="px-6 py-20 sm:py-28 max-w-6xl mx-auto">
-    <div class="text-center mb-12">
-      <h2 class="text-2xl sm:text-3xl font-extrabold mb-3">지금 많이 담고 있는 맛집</h2>
-      <p class="text-ink/60 text-sm sm:text-base">matzip 사용자들이 "가볼 곳"으로 가장 많이 담아둔 곳이에요</p>
+  <section id="popular" class="px-5 py-16 tablet:px-6 tablet:py-28 max-w-6xl desktop:max-w-7xl mx-auto">
+    <div class="text-center mb-10 tablet:mb-12">
+      <h2 class="text-xl tablet:text-3xl font-extrabold mb-3">지금 많이 담고 있는 맛집</h2>
+      <p class="text-ink/60 text-sm tablet:text-base">matzip 사용자들이 "가볼 곳"으로 가장 많이 담아둔 곳이에요</p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-5 tablet:gap-6">
 
       <article class="bg-white rounded-xl2 shadow-sm ring-1 ring-black/5 p-6 hover:shadow-md transition-shadow">
         <div class="flex items-start justify-between mb-3">
@@ -150,14 +154,14 @@
   </section>
 
   <!-- 최근 리뷰 -->
-  <section class="px-6 py-20 sm:py-28 bg-primary/5">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12">
-        <h2 class="text-2xl sm:text-3xl font-extrabold mb-3">방금 올라온 방문기록</h2>
-        <p class="text-ink/60 text-sm sm:text-base">matzip 사용자들의 생생한 한 줄 기록이에요</p>
+  <section class="px-5 py-16 tablet:px-6 tablet:py-28 bg-primary/5">
+    <div class="max-w-6xl desktop:max-w-7xl mx-auto">
+      <div class="text-center mb-10 tablet:mb-12">
+        <h2 class="text-xl tablet:text-3xl font-extrabold mb-3">방금 올라온 방문기록</h2>
+        <p class="text-ink/60 text-sm tablet:text-base">matzip 사용자들의 생생한 한 줄 기록이에요</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-5 tablet:gap-6">
 
         <div class="bg-white rounded-xl2 shadow-sm ring-1 ring-black/5 p-6">
           <div class="flex items-center justify-between mb-3">
@@ -212,13 +216,13 @@
   </section>
 
   <!-- 서비스 특징 -->
-  <section class="px-6 py-20 sm:py-28 max-w-6xl mx-auto">
-    <div class="text-center mb-12">
-      <h2 class="text-2xl sm:text-3xl font-extrabold mb-3">matzip이 곧 보여줄 것들</h2>
-      <p class="text-ink/60 text-sm sm:text-base">더 똑똑하게 맛집을 관리할 수 있는 기능들을 준비하고 있어요</p>
+  <section class="px-5 py-16 tablet:px-6 tablet:py-28 max-w-6xl desktop:max-w-7xl mx-auto">
+    <div class="text-center mb-10 tablet:mb-12">
+      <h2 class="text-xl tablet:text-3xl font-extrabold mb-3">matzip이 곧 보여줄 것들</h2>
+      <p class="text-ink/60 text-sm tablet:text-base">더 똑똑하게 맛집을 관리할 수 있는 기능들을 준비하고 있어요</p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-5 tablet:gap-6">
 
       <div class="rounded-xl2 p-6 ring-1 ring-black/5 bg-white">
         <div class="flex items-center justify-between mb-4">
@@ -260,9 +264,9 @@
   </section>
 
   <!-- 푸터 -->
-  <footer class="px-6 py-12 border-t border-black/5">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div class="text-center sm:text-left">
+  <footer class="px-5 py-10 tablet:px-6 tablet:py-12 border-t border-black/5">
+    <div class="max-w-6xl desktop:max-w-7xl mx-auto flex flex-col tablet:flex-row items-center justify-between gap-6">
+      <div class="text-center tablet:text-left">
         <p class="font-extrabold text-primary mb-1">matzip</p>
         <p class="text-sm text-ink/50">made by 장채원</p>
       </div>
