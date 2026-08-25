@@ -4,14 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Current state
 
-A Next.js app (TypeScript, App Router, `src/` dir, Tailwind CSS v4, ESLint) has been scaffolded at the repo root via `create-next-app` — run with `npm run dev`. It is still an empty default scaffold; none of the real matzip screens/features have been ported into it yet.
+A Next.js app (TypeScript, App Router, `src/` dir, Tailwind CSS v4, ESLint) lives at the repo root via `create-next-app` — run with `npm run dev`. The three prototype screens have been ported into it 1:1 (same markup/Tailwind classes, same DESIGN-2.md look):
 
-The repo also still has three **static, standalone prototype pages** at the root, kept only as reference/prototypes and NOT part of the Next.js app (Next.js doesn't route to them):
-- `index.html` — landing page (Tailwind CDN, self-contained)
-- `search.html` — 카카오맵 키워드/카테고리 검색 프로토타입 (동작하려면 파일 상단에 본인 카카오 REST API 키를 넣어야 함)
-- `browse.html` — 시/도 → 시/군/구 → 카테고리 지역별 둘러보기 프로토타입
+- `src/app/page.tsx` — landing page (was `index.html`)
+- `src/app/search/page.tsx` + `SearchClient.tsx` — 카카오맵 키워드/카테고리 검색 (was `search.html`)
+- `src/app/browse/page.tsx` + `BrowseClient.tsx` — 시/도 → 시/군/구 → 카테고리 지역별 둘러보기 (was `browse.html`)
 
-None of these three have any backend, persistence (no localStorage/Supabase), auth, AI, or map SDK wired up — see `PRD.md` for what's still to build. When implementing a real feature, build it inside the Next.js app (`src/app`), using these HTML files as design/behavior reference rather than editing them further.
+Shared pieces: `src/components/` (`Header`, `PlaceCard`, `StatusPanel`, `ApiKeyBanner`, `HeroSearchForm`), `src/lib/` (`kakao.ts`, `regions.ts`, `fetchPlaces.ts`). All three pages share one `Header` with nav links between `/`, `/search`, `/browse`.
+
+The Kakao REST API call now runs server-side in `src/app/api/search/route.ts`, reading `KAKAO_REST_API_KEY` from `process.env` (set it in `.env.local`, which is gitignored — see `.env.local.example`). Client pages call `/api/search` instead of `dapi.kakao.com` directly, so the key is never exposed to the browser. `/search` and `/browse` are both `force-dynamic` so a key added/rotated in the deploy environment takes effect without a full rebuild.
+
+The original `index.html`, `search.html`, `browse.html` at the repo root are now **stale duplicates** left over from before the migration — the Next.js app in `src/app` is the real, current implementation. Prefer deleting the root HTML files next time they'd cause confusion; don't edit them going forward.
+
+Still not wired up anywhere: Supabase (DB + Auth), persistence for "가볼 곳" saves (the save button is still visual-only, per-card React state with no backend write), Kakao Map SDK (only the REST search API is used, no actual map view), Gemini API, and the dashboard — see `PRD.md`.
 
 ## What matzip is (from PRD.md)
 
