@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HeaderAuthStatus from "./HeaderAuthStatus";
 
 const NAV_LINKS = {
   home: { href: "/", label: "← 홈으로" },
@@ -30,6 +31,7 @@ export default function Header({ current }: { current: PageKey }) {
             {NAV_LINKS[key].label}
           </Link>
         ))}
+        <HeaderAuthStatus />
       </nav>
     </header>
   );

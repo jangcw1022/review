@@ -1,10 +1,13 @@
 export interface KakaoPlace {
+  id: string;
   place_name: string;
   category_name: string;
   road_address_name: string;
   address_name: string;
   phone: string;
   place_url: string;
+  x: string; // longitude
+  y: string; // latitude
 }
 
 export const FOOD_CATEGORY_GROUP_CODE = "FD6";

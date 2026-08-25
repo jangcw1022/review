@@ -1,12 +1,15 @@
-"use client";
-
-import { useState } from "react";
 import type { KakaoPlace } from "@/lib/kakao";
 import { categoryEmoji, shortCategory } from "@/lib/kakao";
 
-export default function PlaceCard({ place }: { place: KakaoPlace }) {
-  const [saved, setSaved] = useState(false);
-
+export default function PlaceCard({
+  place,
+  saved,
+  onToggleSave,
+}: {
+  place: KakaoPlace;
+  saved: boolean;
+  onToggleSave: () => void;
+}) {
   const name = place.place_name || "이름 없음";
   const category = shortCategory(place.category_name);
   const emoji = categoryEmoji(place.category_name);
@@ -35,14 +38,14 @@ export default function PlaceCard({ place }: { place: KakaoPlace }) {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setSaved((prev) => !prev)}
+            onClick={onToggleSave}
             className={
               saved
                 ? "flex-1 text-sm font-semibold px-4 py-2 rounded-full bg-primary/10 text-primary ring-1 ring-primary/30 transition-all"
                 : "flex-1 text-sm font-semibold px-4 py-2 rounded-full bg-primary text-white hover:bg-primary/90 active:scale-95 transition-all"
             }
           >
-            {saved ? "담았어요 ✓" : "가볼 곳 담기"}
+            {saved ? "담김" : "가볼 곳 담기"}
           </button>
           {placeUrl && (
             <a

@@ -6,6 +6,7 @@ import StatusPanel, { type StatusType } from "@/components/StatusPanel";
 import { fetchPlaces } from "@/lib/fetchPlaces";
 import { CATEGORIES, type KakaoPlace } from "@/lib/kakao";
 import { REGIONS } from "@/lib/regions";
+import { useSavedPlaces } from "@/hooks/useSavedPlaces";
 
 function Chip({
   label,
@@ -40,6 +41,7 @@ export default function BrowseClient({ hasApiKey }: { hasApiKey: boolean }) {
     type: "notice",
     message: "시/군/구를 선택해주세요.",
   });
+  const { savedIds, toggleSave } = useSavedPlaces();
 
   async function runSearch(sigungu: string, category: string) {
     if (!sigungu) {
@@ -149,8 +151,13 @@ export default function BrowseClient({ hasApiKey }: { hasApiKey: boolean }) {
       )}
 
       <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-5 tablet:gap-6 desktop:gap-7">
-        {results.map((place, i) => (
-          <PlaceCard key={`${place.place_name}-${i}`} place={place} />
+        {results.map((place) => (
+          <PlaceCard
+            key={place.id}
+            place={place}
+            saved={savedIds.has(place.id)}
+            onToggleSave={() => toggleSave(place)}
+          />
         ))}
       </div>
     </section>

@@ -5,6 +5,7 @@ import PlaceCard from "@/components/PlaceCard";
 import StatusPanel, { type StatusType } from "@/components/StatusPanel";
 import { fetchPlaces } from "@/lib/fetchPlaces";
 import { CATEGORIES, FOOD_CATEGORY_GROUP_CODE, type KakaoPlace } from "@/lib/kakao";
+import { useSavedPlaces } from "@/hooks/useSavedPlaces";
 
 type Status = { type: StatusType; message: string };
 
@@ -33,6 +34,7 @@ export default function SearchClient({
   const [keyword, setKeyword] = useState(initialKeyword ?? "");
   const [activeCategory, setActiveCategory] = useState("");
   const [results, setResults] = useState<KakaoPlace[]>([]);
+  const { savedIds, toggleSave } = useSavedPlaces();
   const [status, setStatus] = useState<Status | null>(() => {
     if (!initialKeyword) return null;
     return hasApiKey ? { type: "loading", message: "검색 중이에요…" } : NO_API_KEY_STATUS;
@@ -167,8 +169,13 @@ export default function SearchClient({
       )}
 
       <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-5 tablet:gap-6 desktop:gap-7">
-        {results.map((place, i) => (
-          <PlaceCard key={`${place.place_name}-${i}`} place={place} />
+        {results.map((place) => (
+          <PlaceCard
+            key={place.id}
+            place={place}
+            saved={savedIds.has(place.id)}
+            onToggleSave={() => toggleSave(place)}
+          />
         ))}
       </div>
     </section>

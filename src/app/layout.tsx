@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AuthProvider from "@/components/AuthProvider";
 
 export const metadata: Metadata = {
   title: "matzip | 가볼 곳을 담고, 가본 곳을 기록하다",
@@ -16,7 +17,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
         />
       </head>
-      <body className="bg-cream text-ink">{children}</body>
+      <body className="bg-cream text-ink">
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }
