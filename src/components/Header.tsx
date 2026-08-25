@@ -5,14 +5,16 @@ const NAV_LINKS = {
   home: { href: "/", label: "← 홈으로" },
   search: { href: "/search", label: "검색" },
   browse: { href: "/browse", label: "지역별 둘러보기" },
+  mypage: { href: "/mypage", label: "마이페이지" },
 } as const;
 
 type PageKey = keyof typeof NAV_LINKS;
 
 const NAV_ORDER: Record<PageKey, PageKey[]> = {
-  home: ["search", "browse"],
-  search: ["browse", "home"],
-  browse: ["search", "home"],
+  home: ["search", "browse", "mypage"],
+  search: ["browse", "mypage", "home"],
+  browse: ["search", "mypage", "home"],
+  mypage: ["search", "browse", "home"],
 };
 
 export default function Header({ current }: { current: PageKey }) {
