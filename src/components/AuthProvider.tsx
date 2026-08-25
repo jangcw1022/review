@@ -32,11 +32,13 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     if (!supabase) return;
 
     supabase.auth.getSession().then(({ data }) => {
+      console.log("[auth] getSession() ->", data.session);
       setUser(data.session?.user ?? null);
       setLoading(false);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("[auth] onAuthStateChange:", event, session);
       setUser(session?.user ?? null);
     });
 

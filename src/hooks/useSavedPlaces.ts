@@ -78,6 +78,9 @@ export function useSavedPlaces() {
       const place = pendingPlace;
 
       // user_id는 클라이언트에서 넣지 않는다 — DB 컬럼 기본값(auth.uid())이 자동으로 채운다.
+      // (로그인한 사용자 id는 참고용으로만 로그를 찍는다. insert 페이로드에는 넣지 않음.)
+      console.log("[saved_places] insert as user.id =", user.id, "(payload에는 user_id를 포함하지 않음)");
+
       const { error } = await supabase.from("saved_places").insert({
         place_id: place.id,
         place_name: place.place_name,
@@ -89,6 +92,7 @@ export function useSavedPlaces() {
       });
 
       if (error) {
+        console.error("[saved_places] insert failed:", error);
         window.alert(`담기 중 문제가 발생했어요. (${error.message})`);
         return;
       }
