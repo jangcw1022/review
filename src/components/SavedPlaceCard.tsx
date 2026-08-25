@@ -96,15 +96,14 @@ export default function SavedPlaceCard({
         </div>
       </div>
 
-      {showDetail && (
-        <PlaceDetailModal
-          placeId={place.place_id}
-          placeName={place.place_name}
-          address={place.address ?? ""}
-          categoryName={place.category_name ?? undefined}
-          onClose={() => setShowDetail(false)}
-        />
-      )}
+      <PlaceDetailModal
+        open={showDetail}
+        placeId={place.place_id}
+        placeName={place.place_name}
+        address={place.address ?? ""}
+        categoryName={place.category_name ?? undefined}
+        onClose={() => setShowDetail(false)}
+      />
     </article>
   );
 }

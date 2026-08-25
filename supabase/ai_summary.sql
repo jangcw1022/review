@@ -62,4 +62,4 @@ as $$
     computed_at = excluded.computed_at
 $$;
 
-grant execute on function public.upsert_place_ai_summary(text, numeric, integer) to anon, authenticated;
+grant execute on function public.upsert_place_ai_summary(text, text, numeric, integer) to anon, authenticated;

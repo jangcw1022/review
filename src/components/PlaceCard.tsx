@@ -86,15 +86,14 @@ export default function PlaceCard({
         </div>
       </div>
 
-      {showDetail && (
-        <PlaceDetailModal
-          placeId={place.id}
-          placeName={name}
-          address={address}
-          categoryName={place.category_name}
-          onClose={() => setShowDetail(false)}
-        />
-      )}
+      <PlaceDetailModal
+        open={showDetail}
+        placeId={place.id}
+        placeName={name}
+        address={address}
+        categoryName={place.category_name}
+        onClose={() => setShowDetail(false)}
+      />
     </article>
   );
 }

@@ -10,12 +10,14 @@ type SummarizeResponse =
   | { status: "error"; message: string };
 
 export default function PlaceDetailModal({
+  open,
   placeId,
   placeName,
   address,
   categoryName,
   onClose,
 }: {
+  open: boolean;
   placeId: string;
   placeName: string;
   address: string;
@@ -24,7 +26,13 @@ export default function PlaceDetailModal({
 }) {
   const [result, setResult] = useState<SummarizeResponse | null>(null);
 
+  // open으로 마운트 여부 자체를 바꾸지 않고(항상 마운트된 채로 유지하고)
+  // 렌더링만 open으로 켜고 끈다 — AuthModal과 동일한 패턴. 부모(카드)가
+  // 다른 이유로 리렌더될 때마다 이 모달까지 통째로 마운트/언마운트되면
+  // effect가 매번 새로 실행되어 API를 반복 호출하게 된다.
   useEffect(() => {
+    if (!open) return;
+
     let cancelled = false;
 
     fetch(`/api/summarize?placeId=${encodeURIComponent(placeId)}`)
@@ -39,7 +47,9 @@ export default function PlaceDetailModal({
     return () => {
       cancelled = true;
     };
-  }, [placeId]);
+  }, [open, placeId]);
+
+  if (!open) return null;
 
   return (
     <div
