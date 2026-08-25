@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { categoryEmoji, shortCategory } from "@/lib/kakao";
 import type { SavedPlaceRow } from "@/lib/savedPlaces";
+import PlaceDetailModal from "./PlaceDetailModal";
 
 function formatSavedDate(iso: string): string {
   const date = new Date(iso);
@@ -15,31 +19,42 @@ export default function SavedPlaceCard({
   onDelete: () => void;
   onEditVisit: () => void;
 }) {
+  const [showDetail, setShowDetail] = useState(false);
+
   const category = shortCategory(place.category_name ?? undefined);
   const emoji = categoryEmoji(place.category_name ?? undefined);
   const visited = place.status === "visited";
 
   return (
     <article className="group bg-white rounded-xl2 shadow-soft ring-1 ring-black/5 overflow-hidden hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300">
-      <div className="relative h-32 tablet:h-36 bg-gradient-to-br from-primary/25 via-primary/10 to-cream flex items-center justify-center text-4xl">
-        {emoji}
-        <span
-          className={
-            visited
-              ? "absolute top-3 left-3 text-xs font-semibold text-white bg-primary px-2.5 py-1 rounded-full shadow-soft"
-              : "absolute top-3 left-3 text-xs font-semibold text-ink/60 bg-white/90 px-2.5 py-1 rounded-full shadow-soft"
-          }
-        >
-          {visited ? "✅ 가본 곳" : "🔖 가볼 곳"}
-        </span>
-        {category && (
-          <span className="absolute top-3 right-3 text-xs font-semibold text-primary bg-white/90 px-2.5 py-1 rounded-full shadow-soft">
-            {category}
+      <button
+        type="button"
+        onClick={() => setShowDetail(true)}
+        className="block w-full text-left"
+      >
+        <div className="relative h-32 tablet:h-36 bg-gradient-to-br from-primary/25 via-primary/10 to-cream flex items-center justify-center text-4xl">
+          {emoji}
+          <span
+            className={
+              visited
+                ? "absolute top-3 left-3 text-xs font-semibold text-white bg-primary px-2.5 py-1 rounded-full shadow-soft"
+                : "absolute top-3 left-3 text-xs font-semibold text-ink/60 bg-white/90 px-2.5 py-1 rounded-full shadow-soft"
+            }
+          >
+            {visited ? "✅ 가본 곳" : "🔖 가볼 곳"}
           </span>
-        )}
-      </div>
-      <div className="p-6">
-        <h3 className="text-lg font-bold mb-1.5">{place.place_name}</h3>
+          {category && (
+            <span className="absolute top-3 right-3 text-xs font-semibold text-primary bg-white/90 px-2.5 py-1 rounded-full shadow-soft">
+              {category}
+            </span>
+          )}
+        </div>
+        <div className="px-6 pt-6">
+          <h3 className="text-lg font-bold mb-1.5">{place.place_name}</h3>
+        </div>
+      </button>
+
+      <div className="px-6 pb-6">
         <p className="text-sm text-ink/55 mb-1 leading-relaxed">📍 {place.address || "주소 정보 없음"}</p>
         <p className="text-xs text-ink/40 mb-2">{formatSavedDate(place.created_at)}에 담음</p>
 
@@ -80,6 +95,16 @@ export default function SavedPlaceCard({
           </button>
         </div>
       </div>
+
+      {showDetail && (
+        <PlaceDetailModal
+          placeId={place.place_id}
+          placeName={place.place_name}
+          address={place.address ?? ""}
+          categoryName={place.category_name ?? undefined}
+          onClose={() => setShowDetail(false)}
+        />
+      )}
     </article>
   );
 }
