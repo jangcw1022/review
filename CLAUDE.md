@@ -4,9 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Current state
 
-This repo currently contains only a **static marketing landing page** (`index.html`) for a product called **matzip** that has not been built yet. There is no app code, no `package.json`, no build step — `index.html` is a single self-contained file styled with the Tailwind CDN (`<script src="https://cdn.tailwindcss.com">`), so it's viewed by opening it directly in a browser (`open index.html`). There is no test suite and no lint config.
+A Next.js app (TypeScript, App Router, `src/` dir, Tailwind CSS v4, ESLint) has been scaffolded at the repo root via `create-next-app` — run with `npm run dev`. It is still an empty default scaffold; none of the real matzip screens/features have been ported into it yet.
 
-The planned full product (map + Supabase + Next.js, see below) does not exist yet in this repo — don't assume any of that stack is wired up.
+The repo also still has three **static, standalone prototype pages** at the root, kept only as reference/prototypes and NOT part of the Next.js app (Next.js doesn't route to them):
+- `index.html` — landing page (Tailwind CDN, self-contained)
+- `search.html` — 카카오맵 키워드/카테고리 검색 프로토타입 (동작하려면 파일 상단에 본인 카카오 REST API 키를 넣어야 함)
+- `browse.html` — 시/도 → 시/군/구 → 카테고리 지역별 둘러보기 프로토타입
+
+None of these three have any backend, persistence (no localStorage/Supabase), auth, AI, or map SDK wired up — see `PRD.md` for what's still to build. When implementing a real feature, build it inside the Next.js app (`src/app`), using these HTML files as design/behavior reference rather than editing them further.
 
 ## What matzip is (from PRD.md)
 
