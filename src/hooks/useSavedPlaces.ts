@@ -92,7 +92,10 @@ export function useSavedPlaces() {
       });
 
       if (error) {
-        console.error("[saved_places] insert failed:", error);
+        console.error("[saved_places] insert failed — message:", error.message);
+        console.error("[saved_places] insert failed — code:", error.code);
+        console.error("[saved_places] insert failed — details:", error.details);
+        console.error("[saved_places] insert failed — hint:", error.hint);
         window.alert(`담기 중 문제가 발생했어요. (${error.message})`);
         return;
       }
