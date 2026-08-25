@@ -5,10 +5,14 @@ export default function PlaceCard({
   place,
   saved,
   onToggleSave,
+  rank,
+  saveCount,
 }: {
   place: KakaoPlace;
   saved: boolean;
   onToggleSave: () => void;
+  rank?: number;
+  saveCount?: number;
 }) {
   const name = place.place_name || "이름 없음";
   const category = shortCategory(place.category_name);
@@ -21,6 +25,11 @@ export default function PlaceCard({
     <article className="group bg-white rounded-xl2 shadow-soft ring-1 ring-black/5 overflow-hidden hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300">
       <div className="relative h-32 tablet:h-36 bg-gradient-to-br from-primary/25 via-primary/10 to-cream flex items-center justify-center text-4xl">
         {emoji}
+        {rank !== undefined && (
+          <span className="absolute top-3 left-3 text-xs font-bold text-white bg-primary px-2.5 py-1 rounded-full shadow-soft">
+            {rank}위
+          </span>
+        )}
         {category && (
           <span className="absolute top-3 right-3 text-xs font-semibold text-primary bg-white/90 px-2.5 py-1 rounded-full shadow-soft">
             {category}
@@ -31,9 +40,14 @@ export default function PlaceCard({
         <h3 className="text-lg font-bold mb-1.5">{name}</h3>
         <p className="text-sm text-ink/55 mb-1 leading-relaxed">📍 {address}</p>
         {phone ? (
-          <p className="text-sm text-ink/55 mb-4 leading-relaxed">📞 {phone}</p>
+          <p className={`text-sm text-ink/55 leading-relaxed ${saveCount !== undefined ? "mb-1" : "mb-4"}`}>
+            📞 {phone}
+          </p>
         ) : (
-          <div className="mb-4" />
+          <div className={saveCount !== undefined ? "mb-1" : "mb-4"} />
+        )}
+        {saveCount !== undefined && (
+          <p className="text-xs text-primary/80 font-medium mb-4">{saveCount}명이 담았어요</p>
         )}
         <div className="flex items-center gap-2">
           <button

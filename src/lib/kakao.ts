@@ -23,6 +23,11 @@ export function shortCategory(categoryName: string | undefined): string {
   return parts[parts.length - 1] || categoryName;
 }
 
+export function broadCategory(categoryName: string | null | undefined): string | null {
+  const name = categoryName || "";
+  return CATEGORIES.find((category) => name.includes(category)) ?? null;
+}
+
 export function categoryEmoji(categoryName: string | undefined): string {
   const name = categoryName || "";
   if (name.includes("한식")) return "🍚";

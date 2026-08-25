@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
+import RecommendedPlaces from "@/components/RecommendedPlaces";
 import SavedPlaceCard from "@/components/SavedPlaceCard";
 import StatusPanel from "@/components/StatusPanel";
 import { deleteSavedPlace, fetchSavedPlaces, type SavedPlaceRow } from "@/lib/savedPlaces";
@@ -115,10 +116,11 @@ export default function MypageClient() {
     );
   }
 
-  if (places.length === 0) {
-    return (
-      <section className="px-5 py-8 tablet:px-6 tablet:py-10 desktop:py-12 max-w-6xl desktop:max-w-7xl mx-auto">
-        {heading}
+  return (
+    <section className="px-5 py-8 tablet:px-6 tablet:py-10 desktop:py-12 max-w-6xl desktop:max-w-7xl mx-auto">
+      {heading}
+
+      {places.length === 0 ? (
         <StatusPanel
           type="empty"
           icon="🍽️"
@@ -130,18 +132,15 @@ export default function MypageClient() {
             </Link>
           }
         />
-      </section>
-    );
-  }
+      ) : (
+        <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-5 tablet:gap-6 desktop:gap-7">
+          {places.map((place) => (
+            <SavedPlaceCard key={place.id} place={place} onDelete={() => handleDelete(place)} />
+          ))}
+        </div>
+      )}
 
-  return (
-    <section className="px-5 py-8 tablet:px-6 tablet:py-10 desktop:py-12 max-w-6xl desktop:max-w-7xl mx-auto">
-      {heading}
-      <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-5 tablet:gap-6 desktop:gap-7">
-        {places.map((place) => (
-          <SavedPlaceCard key={place.id} place={place} onDelete={() => handleDelete(place)} />
-        ))}
-      </div>
+      <RecommendedPlaces savedPlaces={places} />
     </section>
   );
 }

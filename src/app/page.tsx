@@ -1,50 +1,6 @@
 import Header from "@/components/Header";
 import HeroSearchForm from "@/components/HeroSearchForm";
-
-const POPULAR_PLACES = [
-  {
-    emoji: "🥩",
-    category: "한식",
-    name: "연남동 소금구이집",
-    description: "숯불에 구운 두툼한 목살과 직접 담근 겉절이가 일품인 노포 감성 맛집.",
-    tags: ["회식", "가성비"],
-  },
-  {
-    emoji: "🍝",
-    category: "양식",
-    name: "망원동 파스타공방",
-    description: "매일 뽑는 생면과 트러플 크림 파스타로 유명한 골목 안 작은 식당.",
-    tags: ["데이트", "분위기"],
-  },
-  {
-    emoji: "🍶",
-    category: "일식",
-    name: "을지로 다찌 이자카야",
-    description: "신선한 사시미와 계절 안주를 카운터석에서 즐길 수 있는 조용한 술집.",
-    tags: ["혼밥", "술"],
-  },
-  {
-    emoji: "🌶️",
-    category: "중식",
-    name: "성수동 마라공방",
-    description: "매운맛 단계를 직접 고를 수 있는 마라탕·마라샹궈 전문점.",
-    tags: ["혼밥", "가성비"],
-  },
-  {
-    emoji: "🥐",
-    category: "카페",
-    name: "한남동 브런치 라운지",
-    description: "햇살 좋은 통창 자리에서 즐기는 에그 베네딕트와 핸드드립 커피.",
-    tags: ["분위기", "데이트"],
-  },
-  {
-    emoji: "🍢",
-    category: "한식",
-    name: "홍대 감성 포차",
-    description: "떡볶이부터 계란말이까지, 친구들과 왁자지껄 즐기기 좋은 포장마차.",
-    tags: ["회식", "가성비"],
-  },
-];
+import PopularPlaces from "@/components/PopularPlaces";
 
 const RECENT_REVIEWS = [
   { initial: "연", name: "연남동 소금구이집", rating: "★★★★★", note: "고기 두께부터 다름. 재방문 100%." },
@@ -115,37 +71,12 @@ export default function Home() {
       <section id="popular" className="px-5 py-20 tablet:px-6 tablet:py-28 desktop:py-32 max-w-6xl desktop:max-w-7xl mx-auto">
         <div className="text-center mb-12 tablet:mb-16">
           <h2 className="text-2xl tablet:text-3xl desktop:text-4xl font-extrabold tracking-tight mb-3">
-            지금 많이 담고 있는 맛집
+            지금 인기 맛집 TOP 5
           </h2>
           <p className="text-ink/55 text-sm tablet:text-base">matzip 사용자들이 &quot;가볼 곳&quot;으로 가장 많이 담아둔 곳이에요</p>
         </div>
 
-        <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-6 tablet:gap-7">
-          {POPULAR_PLACES.map((place) => (
-            <article
-              key={place.name}
-              className="group bg-white rounded-xl2 shadow-soft ring-1 ring-black/5 overflow-hidden hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="relative h-36 tablet:h-40 bg-gradient-to-br from-primary/25 via-primary/10 to-cream flex items-center justify-center text-4xl">
-                {place.emoji}
-                <span className="absolute top-3 right-3 text-xs font-semibold text-primary bg-white/90 px-2.5 py-1 rounded-full shadow-soft">
-                  {place.category}
-                </span>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold mb-1.5">{place.name}</h3>
-                <p className="text-sm text-ink/55 mb-4 leading-relaxed">{place.description}</p>
-                <div className="flex gap-2 flex-wrap">
-                  {place.tags.map((tag) => (
-                    <span key={tag} className="text-xs text-ink/50 bg-black/5 px-2.5 py-1 rounded-full">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+        <PopularPlaces />
       </section>
 
       {/* 최근 리뷰 */}
