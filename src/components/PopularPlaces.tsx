@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import PlaceCard from "./PlaceCard";
+import SaveWithTagsModal from "./SaveWithTagsModal";
 import StatusPanel from "./StatusPanel";
 import { useSavedPlaces } from "@/hooks/useSavedPlaces";
 import { fetchPopularPlaces, popularPlaceToKakaoPlace, type PopularPlaceRow } from "@/lib/popularPlaces";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 export default function PopularPlaces() {
-  const { savedIds, toggleSave } = useSavedPlaces();
+  const { savedIds, toggleSave, pendingPlace, confirmSave, cancelSave } = useSavedPlaces();
   const [rows, setRows] = useState<PopularPlaceRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -57,20 +58,26 @@ export default function PopularPlaces() {
   }
 
   return (
-    <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-6 tablet:gap-7">
-      {rows.map((row, i) => {
-        const place = popularPlaceToKakaoPlace(row);
-        return (
-          <PlaceCard
-            key={row.place_id}
-            place={place}
-            saved={savedIds.has(place.id)}
-            onToggleSave={() => toggleSave(place)}
-            rank={i + 1}
-            saveCount={row.save_count}
-          />
-        );
-      })}
-    </div>
+    <>
+      <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 gap-6 tablet:gap-7">
+        {rows.map((row, i) => {
+          const place = popularPlaceToKakaoPlace(row);
+          return (
+            <PlaceCard
+              key={row.place_id}
+              place={place}
+              saved={savedIds.has(place.id)}
+              onToggleSave={() => toggleSave(place)}
+              rank={i + 1}
+              saveCount={row.save_count}
+            />
+          );
+        })}
+      </div>
+
+      {pendingPlace && (
+        <SaveWithTagsModal place={pendingPlace} onConfirm={confirmSave} onCancel={cancelSave} />
+      )}
+    </>
   );
 }

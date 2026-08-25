@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import PlaceCard from "@/components/PlaceCard";
+import SaveWithTagsModal from "@/components/SaveWithTagsModal";
 import StatusPanel, { type StatusType } from "@/components/StatusPanel";
 import { fetchPlaces } from "@/lib/fetchPlaces";
 import { CATEGORIES, type KakaoPlace } from "@/lib/kakao";
@@ -41,7 +42,7 @@ export default function BrowseClient({ hasApiKey }: { hasApiKey: boolean }) {
     type: "notice",
     message: "시/군/구를 선택해주세요.",
   });
-  const { savedIds, toggleSave } = useSavedPlaces();
+  const { savedIds, toggleSave, pendingPlace, confirmSave, cancelSave } = useSavedPlaces();
 
   async function runSearch(sigungu: string, category: string) {
     if (!sigungu) {
@@ -160,6 +161,10 @@ export default function BrowseClient({ hasApiKey }: { hasApiKey: boolean }) {
           />
         ))}
       </div>
+
+      {pendingPlace && (
+        <SaveWithTagsModal place={pendingPlace} onConfirm={confirmSave} onCancel={cancelSave} />
+      )}
     </section>
   );
 }

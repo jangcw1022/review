@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import PlaceCard from "./PlaceCard";
+import SaveWithTagsModal from "./SaveWithTagsModal";
 import StatusPanel from "./StatusPanel";
 import { useSavedPlaces } from "@/hooks/useSavedPlaces";
 import { fetchPlaces } from "@/lib/fetchPlaces";
@@ -31,7 +32,7 @@ function findTopCategory(savedPlaces: SavedPlaceRow[]): string | null {
 }
 
 export default function RecommendedPlaces({ savedPlaces }: { savedPlaces: SavedPlaceRow[] }) {
-  const { savedIds, toggleSave } = useSavedPlaces();
+  const { savedIds, toggleSave, pendingPlace, confirmSave, cancelSave } = useSavedPlaces();
   const [loaded, setLoaded] = useState<{ category: string; documents: KakaoPlace[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -104,6 +105,10 @@ export default function RecommendedPlaces({ savedPlaces }: { savedPlaces: SavedP
             />
           ))}
         </div>
+      )}
+
+      {pendingPlace && (
+        <SaveWithTagsModal place={pendingPlace} onConfirm={confirmSave} onCancel={cancelSave} />
       )}
     </section>
   );

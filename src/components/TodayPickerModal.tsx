@@ -5,8 +5,15 @@ import { useAuth } from "./AuthProvider";
 import StatusPanel from "./StatusPanel";
 import { CATEGORIES, categoryEmoji, shortCategory } from "@/lib/kakao";
 import { primaryButtonClass } from "@/lib/styles";
+import { TAGS } from "@/lib/tags";
 import { fetchTodayCandidates, type TodayPickerFilter } from "@/lib/todayPicker";
-import type { SavedPlaceRow } from "@/lib/savedPlaces";
+import type { SavedPlaceRow, SavedPlaceStatus } from "@/lib/savedPlaces";
+
+const STATUS_OPTIONS: { value: "all" | SavedPlaceStatus; label: string }[] = [
+  { value: "all", label: "둘 다" },
+  { value: "to_visit", label: "가볼 곳" },
+  { value: "visited", label: "가본 곳" },
+];
 
 const activeChipClass =
   "shrink-0 text-xs tablet:text-sm font-semibold px-4 py-2 rounded-full transition-colors bg-primary text-white shadow-soft";
@@ -17,7 +24,7 @@ type ViewState = { step: "list" } | { step: "picked"; place: SavedPlaceRow };
 
 export default function TodayPickerModal({ onClose }: { onClose: () => void }) {
   const { user, configured, loading: authLoading, openAuthModal } = useAuth();
-  const [filter, setFilter] = useState<TodayPickerFilter>({ categories: [] });
+  const [filter, setFilter] = useState<TodayPickerFilter>({ categories: [], tags: [], status: "all" });
   const [candidates, setCandidates] = useState<SavedPlaceRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<ViewState>({ step: "list" });
@@ -46,6 +53,7 @@ export default function TodayPickerModal({ onClose }: { onClose: () => void }) {
   function toggleCategory(category: string) {
     setView({ step: "list" });
     setFilter((prev) => ({
+      ...prev,
       categories: prev.categories.includes(category)
         ? prev.categories.filter((c) => c !== category)
         : [...prev.categories, category],
@@ -54,7 +62,25 @@ export default function TodayPickerModal({ onClose }: { onClose: () => void }) {
 
   function selectAllCategories() {
     setView({ step: "list" });
-    setFilter({ categories: [] });
+    setFilter((prev) => ({ ...prev, categories: [] }));
+  }
+
+  function toggleTag(tag: string) {
+    setView({ step: "list" });
+    setFilter((prev) => ({
+      ...prev,
+      tags: prev.tags.includes(tag) ? prev.tags.filter((t) => t !== tag) : [...prev.tags, tag],
+    }));
+  }
+
+  function selectAllTags() {
+    setView({ step: "list" });
+    setFilter((prev) => ({ ...prev, tags: [] }));
+  }
+
+  function setStatus(status: TodayPickerFilter["status"]) {
+    setView({ step: "list" });
+    setFilter((prev) => ({ ...prev, status }));
   }
 
   return (
@@ -147,6 +173,45 @@ export default function TodayPickerModal({ onClose }: { onClose: () => void }) {
               </div>
             </div>
 
+            <div className="mb-5">
+              <h3 className="text-xs font-semibold text-ink/45 mb-2.5">태그</h3>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={selectAllTags}
+                  className={filter.tags.length === 0 ? activeChipClass : inactiveChipClass}
+                >
+                  전체
+                </button>
+                {TAGS.map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => toggleTag(tag)}
+                    className={filter.tags.includes(tag) ? activeChipClass : inactiveChipClass}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-5">
+              <h3 className="text-xs font-semibold text-ink/45 mb-2.5">가볼 곳 / 가본 곳</h3>
+              <div className="flex flex-wrap gap-2">
+                {STATUS_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setStatus(option.value)}
+                    className={filter.status === option.value ? activeChipClass : inactiveChipClass}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {error && <StatusPanel type="error" message={`후보를 불러오지 못했어요. (${error})`} />}
 
             {!error && candidates === null && <StatusPanel type="loading" message="후보를 찾고 있어요…" />}
@@ -156,7 +221,7 @@ export default function TodayPickerModal({ onClose }: { onClose: () => void }) {
                 type="empty"
                 icon="🤷"
                 title="조건에 맞는 곳이 없어요"
-                message="다른 카테고리를 선택해보세요."
+                message="다른 카테고리나 태그를 선택해보세요."
               />
             )}
 

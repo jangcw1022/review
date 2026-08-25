@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import PlaceCard from "@/components/PlaceCard";
+import SaveWithTagsModal from "@/components/SaveWithTagsModal";
 import StatusPanel, { type StatusType } from "@/components/StatusPanel";
 import { fetchPlaces } from "@/lib/fetchPlaces";
 import { CATEGORIES, FOOD_CATEGORY_GROUP_CODE, type KakaoPlace } from "@/lib/kakao";
@@ -34,7 +35,7 @@ export default function SearchClient({
   const [keyword, setKeyword] = useState(initialKeyword ?? "");
   const [activeCategory, setActiveCategory] = useState("");
   const [results, setResults] = useState<KakaoPlace[]>([]);
-  const { savedIds, toggleSave } = useSavedPlaces();
+  const { savedIds, toggleSave, pendingPlace, confirmSave, cancelSave } = useSavedPlaces();
   const [status, setStatus] = useState<Status | null>(() => {
     if (!initialKeyword) return null;
     return hasApiKey ? { type: "loading", message: "검색 중이에요…" } : NO_API_KEY_STATUS;
@@ -178,6 +179,10 @@ export default function SearchClient({
           />
         ))}
       </div>
+
+      {pendingPlace && (
+        <SaveWithTagsModal place={pendingPlace} onConfirm={confirmSave} onCancel={cancelSave} />
+      )}
     </section>
   );
 }

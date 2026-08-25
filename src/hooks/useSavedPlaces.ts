@@ -10,6 +10,7 @@ const EMPTY_SET: Set<string> = new Set();
 export function useSavedPlaces() {
   const { user, configured, openAuthModal } = useAuth();
   const [loaded, setLoaded] = useState<{ userId: string; ids: Set<string> } | null>(null);
+  const [pendingPlace, setPendingPlace] = useState<KakaoPlace | null>(null);
 
   const savedIds = loaded && user && loaded.userId === user.id ? loaded.ids : EMPTY_SET;
 
@@ -31,6 +32,8 @@ export function useSavedPlaces() {
     };
   }, [configured, user]);
 
+  // 담김 상태(이미 저장됨)면 바로 취소(삭제)하고, 아직 안 담겼으면 태그를 고를 수
+  // 있도록 모달을 띄운다 — 실제 insert는 confirmSave에서 일어난다.
   const toggleSave = useCallback(
     async (place: KakaoPlace) => {
       if (!configured || !supabase) {
@@ -44,27 +47,35 @@ export function useSavedPlaces() {
         return;
       }
 
-      const alreadySaved = savedIds.has(place.id);
-
-      if (alreadySaved) {
-        const { error } = await supabase
-          .from("saved_places")
-          .delete()
-          .eq("user_id", user.id)
-          .eq("place_id", place.id);
-
-        if (error) {
-          window.alert(`담기 취소 중 문제가 발생했어요. (${error.message})`);
-          return;
-        }
-
-        setLoaded((prev) => {
-          const next = new Set(prev && prev.userId === user.id ? prev.ids : []);
-          next.delete(place.id);
-          return { userId: user.id, ids: next };
-        });
+      if (!savedIds.has(place.id)) {
+        setPendingPlace(place);
         return;
       }
+
+      const { error } = await supabase
+        .from("saved_places")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("place_id", place.id);
+
+      if (error) {
+        window.alert(`담기 취소 중 문제가 발생했어요. (${error.message})`);
+        return;
+      }
+
+      setLoaded((prev) => {
+        const next = new Set(prev && prev.userId === user.id ? prev.ids : []);
+        next.delete(place.id);
+        return { userId: user.id, ids: next };
+      });
+    },
+    [configured, user, savedIds, openAuthModal]
+  );
+
+  const confirmSave = useCallback(
+    async (tags: string[]) => {
+      if (!supabase || !user || !pendingPlace) return;
+      const place = pendingPlace;
 
       // user_id는 클라이언트에서 넣지 않는다 — DB 컬럼 기본값(auth.uid())이 자동으로 채운다.
       const { error } = await supabase.from("saved_places").insert({
@@ -74,6 +85,7 @@ export function useSavedPlaces() {
         category_name: place.category_name,
         x: place.x,
         y: place.y,
+        tags,
       });
 
       if (error) {
@@ -86,9 +98,12 @@ export function useSavedPlaces() {
         next.add(place.id);
         return { userId: user.id, ids: next };
       });
+      setPendingPlace(null);
     },
-    [configured, user, savedIds, openAuthModal]
+    [user, pendingPlace]
   );
 
-  return { savedIds, toggleSave };
+  const cancelSave = useCallback(() => setPendingPlace(null), []);
+
+  return { savedIds, toggleSave, pendingPlace, confirmSave, cancelSave };
 }
