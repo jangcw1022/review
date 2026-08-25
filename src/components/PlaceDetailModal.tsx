@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import StatusPanel from "./StatusPanel";
 import { shortCategory } from "@/lib/kakao";
 
@@ -51,7 +52,13 @@ export default function PlaceDetailModal({
 
   if (!open) return null;
 
-  return (
+  // 카드(article)에 hover 시 transform(-translate-y)이 걸려 있어서, 이 모달이
+  // 카드의 DOM 자손으로 남아있으면 카드가 fixed 모달의 containing block이
+  // 되어버린다 — 그러면 "전체 화면 fixed"였어야 할 모달이 카드 크기로
+  // 찌그러들고 overflow-hidden에 잘려서, hover 상태가 바뀔 때마다 화면을
+  // 꽉 채운 모습과 카드 안에 찌그러든 모습을 오가며 깜빡이는 것처럼 보였다.
+  // 포탈로 body에 직접 렌더링해서 카드의 DOM 서브트리를 완전히 벗어난다.
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-5"
       onClick={onClose}
@@ -106,6 +113,7 @@ export default function PlaceDetailModal({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
