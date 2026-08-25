@@ -7,9 +7,7 @@ import RecommendedPlaces from "@/components/RecommendedPlaces";
 import SavedPlaceCard from "@/components/SavedPlaceCard";
 import StatusPanel from "@/components/StatusPanel";
 import { deleteSavedPlace, fetchSavedPlaces, type SavedPlaceRow } from "@/lib/savedPlaces";
-
-const primaryButtonClass =
-  "inline-block bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-primary/90 active:scale-95 transition-all";
+import { primaryButtonClass } from "@/lib/styles";
 
 export default function MypageClient() {
   const { user, configured, loading: authLoading, openAuthModal } = useAuth();

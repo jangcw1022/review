@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
+import TodayPickerButton from "@/components/TodayPickerButton";
 
 export const metadata: Metadata = {
   title: "matzip | 가볼 곳을 담고, 가본 곳을 기록하다",
@@ -18,7 +19,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="bg-cream text-ink">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <TodayPickerButton />
+        </AuthProvider>
       </body>
     </html>
   );
